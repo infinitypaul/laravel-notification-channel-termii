@@ -41,7 +41,7 @@ Time to tell Laravel your deepest secret (aka your Termii API Key). Also, add yo
 ```php
 // config/services.php
 'termii' => [
-'key' => env('TERMII_API_KEY'),
+'api_key' => env('TERMII_API_KEY'),
 'from' => env('TERMII_FROM'),
 'channel' => 'dnd' //because I know you love 'do not disturb' mode 😉
 ]
