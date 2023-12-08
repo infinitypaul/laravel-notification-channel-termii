@@ -1,7 +1,6 @@
 # Termii notifications channel for Laravel
 
-This package brings you the joy of sending [Termii notifications](https://developer.termii.com) with Laravel, with the
-same effortlessness as a Sunday morning coffee. Take a sip and let's get started.
+This package brings you the joy of sending [Termii notifications](https://developer.termii.com) with Laravel, with the same effortlessness as a Sunday morning coffee. Take a sip and let's get started.
 
 ## Contents
 
@@ -61,10 +60,10 @@ use Illuminate\Notifications\Notification;
 
 class WelcomeSMS extends Notification
 {
-public function via($notifiable)
-{
-return [TermiiChannel::class]; // see? pie!
-}
+    public function via($notifiable)
+    {
+        return [TermiiChannel::class]; // see? pie!
+    }
 
     public function toTermii($notifiable)
     {
@@ -82,7 +81,6 @@ public function routeNotificationForTermii()
 {
     return $this->phone; // where `phone` is a field in your users table;
 }
-
 ```
 
 or you can also just send it from `TermiiMessage` class in your `toTermii()` implementation.
