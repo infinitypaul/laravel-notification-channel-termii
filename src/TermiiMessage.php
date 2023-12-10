@@ -2,8 +2,6 @@
 
 namespace Infinitypaul\Termii;
 
-use Illuminate\Support\Arr;
-
 class TermiiMessage
 {
     /**
@@ -21,8 +19,7 @@ class TermiiMessage
      */
     public $channel;
 
-    public $type='plain';
-
+    public $type = 'plain';
 
 
     /**
@@ -45,9 +42,17 @@ class TermiiMessage
     public $from;
 
     /**
+     * The phone number the message should be sent to.
+     * This can also be set in the routeNotificationForTermii method.
+     *
+     * @var string|null
+     */
+    public $to;
+
+    /**
      * Create a new message instance.
      *
-     * @param  string  $content
+     * @param string $content
      * @return void
      */
     public function __construct($content = '')
@@ -58,7 +63,7 @@ class TermiiMessage
     /**
      * Set the message content.
      *
-     * @param  string  $content
+     * @param string $content
      * @return $this
      */
     public function content($content): TermiiMessage
@@ -109,7 +114,7 @@ class TermiiMessage
     /**
      * Set the phone number the message should be sent from.
      *
-     * @param  string  $from
+     * @param string $from
      * @return $this
      */
     public function from($from): TermiiMessage
@@ -119,5 +124,18 @@ class TermiiMessage
         return $this;
     }
 
+    /**
+     * Set the phone number the message should be sent to.
+     *
+     * @param string|null $to
+     * @return TermiiMessage
+     */
+    public function to($to): TermiiMessage
+    {
+        if ($to !== null) {
+            $this->to = $to;
+        }
 
+        return $this;
+    }
 }

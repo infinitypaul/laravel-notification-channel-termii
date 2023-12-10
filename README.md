@@ -1,6 +1,5 @@
 # Termii notifications channel for Laravel
 
-
 This package brings you the joy of sending [Termii notifications](https://developer.termii.com) with Laravel, with the same effortlessness as a Sunday morning coffee. Take a sip and let's get started.
 
 ## Contents
@@ -23,7 +22,9 @@ You can install the package faster than you can say "composer" via composer:
 ``` bash
 composer require infinitypaul/laravel-notification-channel-termii
 ```
-Service providers... You gotta love them. You either have to install them yourself, or if you're living on the edge with Laravel 5.5 or higher, let the package auto discovery do the work for you:
+
+Service providers... You gotta love them. You either have to install them yourself, or if you're living on the edge with
+Laravel 5.5 or higher, let the package auto discovery do the work for you:
 
 ```php
 // config/app.php
@@ -33,10 +34,11 @@ Service providers... You gotta love them. You either have to install them yourse
 ],
 
 ```
+
 ### Setting up your Termii account
 
-Time to tell Laravel your deepest secret (aka your Termii API Key). Also, add your favorite channel and an optional Sender ID. Whisper these to your config/services.php:
-
+Time to tell Laravel your deepest secret (aka your Termii API Key). Also, add your favorite channel and an optional
+Sender ID. Whisper these to your config/services.php:
 
 ```php
 // config/services.php
@@ -58,10 +60,10 @@ use Illuminate\Notifications\Notification;
 
 class WelcomeSMS extends Notification
 {
-public function via($notifiable)
-{
-return [TermiiChannel::class]; // see? pie!
-}
+    public function via($notifiable)
+    {
+        return [TermiiChannel::class]; // see? pie!
+    }
 
     public function toTermii($notifiable)
     {
@@ -71,44 +73,61 @@ return [TermiiChannel::class]; // see? pie!
 }
 ```
 
-Let's tell your Notification where it's heading(which phone are you sending to). Add the routeNotificationForTermii method to your Notifiable model (e.g., your User Model).
-
+Let's tell your Notification where it's heading(which phone are you sending to). Add the routeNotificationForTermii
+method to your Notifiable model (e.g., your User Model).
 
 ```php
 public function routeNotificationForTermii()
 {
     return $this->phone; // where `phone` is a field in your users table;
 }
+```
 
+or you can also just send it from `TermiiMessage` class in your `toTermii()` implementation.
+
+```php
+public function toTermii($notifiable)
+    {
+        return (new TermiiMessage())
+            ->content("Thanks For Subscribing to infinitypaul.medium.com. We promise to only send interesting stuff, no cat videos... well, maybe just one.")
+            ->to("234100000001");
+    }
 ```
 
 ### Available Message methods
 
 #### TermiiMessage
 
-- `from('')`: Accepts a string -Represents a sender ID for sms which can be Alphanumeric or Device name for Whatsapp. Alphanumeric sender ID length should be between 3 and 11 characters (Example:CompanyName).
+- `from('')`: Accepts a string -Represents a sender ID for sms which can be Alphanumeric or Device name for Whatsapp.
+  Alphanumeric sender ID length should be between 3 and 11 characters (Example:CompanyName).
+- `to('')`: Accepts a string - Represents a destination ID for sms in international format (Example: 2338013828492).
+  It is optional, and can be set in the notifable model `routeNotificationForTermii()`.
 - `content('')`: Accepts a string - Text of a message that would be sent to the destination phone number.
-- `channel('')`: Accepts a string This is the route through which the message is sent. It is either `dnd`, `whatsapp`, or `generic`, by default it is dnd.
-- `media('')`: Accepts an array, if your channel is `whatsapp` This is a media object, it is only available for the High Volume WhatsApp. When using the media parameter, ensure you are not using the sms parameter.
+- `channel('')`: Accepts a string This is the route through which the message is sent. It is either `dnd`, `whatsapp`,
+  or `generic`, by default it is dnd.
+- `media('')`: Accepts an array, if your channel is `whatsapp` This is a media object, it is only available for the High
+  Volume WhatsApp. When using the media parameter, ensure you are not using the sms parameter.
 - `media_url('')`: Accepts a string, if your channel is `whatsapp` The url to the file resource,.
 - `media_option('')`: Accepts a string, if your channel is `whatsapp` The caption that should be added to the image,.
 
-
 ## Changelog
+
 Curious about our termii journey? Check out CHANGELOG for more information on what has changed recently.
 
 ## Testing
+
 ```php
 composer test //(We promise it won't explode.)
 ```
 
 ## Security
-Discovered any security issues? Please email us at infinitypaul@live.com. We promise to take it seriously, instead of using the issue tracker..
+
+Discovered any security issues? Please email us at infinitypaul@live.com. We promise to take it seriously, instead of
+using the issue tracker..
 
 ## Credits
 
 - [Paul Edward](https://github.com/infinitypaul)
-
 
 ## License
 
