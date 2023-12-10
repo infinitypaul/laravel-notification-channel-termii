@@ -32,7 +32,7 @@ class TermiiChannel
             $message = new TermiiMessage($message);
         }
 
-        if (!($to = $notifiable->routeNotificationFor('termii')) && !($to = $message->to)) {
+        if (!($to = $message->to) && !($to = $notifiable->routeNotificationFor('termii'))) {
             throw CouldNotSendNotification::serviceRespondedWithAnError('Missing destination number');
         }
 
