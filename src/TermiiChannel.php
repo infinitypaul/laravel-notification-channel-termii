@@ -2,8 +2,8 @@
 
 namespace Infinitypaul\Termii;
 
-use Infinitypaul\Termii\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
+use Infinitypaul\Termii\Exceptions\CouldNotSendNotification;
 
 class TermiiChannel
 {
@@ -26,42 +26,41 @@ class TermiiChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $to = $notifiable->routeNotificationFor('termii')) {
-            throw CouldNotSendNotification::serviceRespondedWithAnError('Missing destination number');
-        }
-
         $message = $notification->toTermii($notifiable);
 
         if (is_string($message)) {
             $message = new TermiiMessage($message);
         }
 
-        if (! $channel = $message->channel ?: config('services.termii.channel')) {
+        if (!($to = $message->to) && !($to = $notifiable->routeNotificationFor('termii'))) {
+            throw CouldNotSendNotification::serviceRespondedWithAnError('Missing destination number');
+        }
+
+        if (!$channel = $message->channel ?: config('services.termii.channel')) {
             throw CouldNotSendNotification::serviceRespondedWithAnError('Missing channel ');
         }
 
-        if (! $from = $message->from ?: config('services.termii.from')) {
+        if (!$from = $message->from ?: config('services.termii.from')) {
             throw CouldNotSendNotification::serviceRespondedWithAnError('Missing sender ID ');
         }
 
         try {
-            $payload =  $this->termii->add('to', $to)
+            $payload = $this->termii->add('to', $to)
                 ->add('sms', $message->content)
                 ->add('from', $from)
                 ->add('type', $message->type)
                 ->add('channel', $channel);
 
-            if($channel == 'whatsapp'){
+            if ($channel == 'whatsapp') {
                 $payload->add('media', $message->media)
                     ->add('media_url', $message->media_url)
                     ->add('media_caption', $message->media_caption);
             }
 
-           return $payload->sendMessage();
+            return $payload->sendMessage();
 
         } catch (\Exception $exception) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($exception);
         }
-
     }
 }
