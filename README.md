@@ -1,6 +1,7 @@
 # Termii notifications channel for Laravel
 
-This package brings you the joy of sending [Termii notifications](https://developer.termii.com) with Laravel, with the same effortlessness as a Sunday morning coffee. Take a sip and let's get started.
+This package brings you the joy of sending [Termii notifications](https://developer.termii.com) with Laravel, with the
+same effortlessness as a Sunday morning coffee. Take a sip and let's get started.
 
 ## Contents
 
