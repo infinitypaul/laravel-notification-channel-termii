@@ -53,8 +53,8 @@ class Termii
     }
 
     public function sendMessage(){
-        $response = $this->client->request('GET', 'api/sms/send', [
-            'query' => $this->body
+        $response = $this->client->request('POST', 'api/sms/send', [
+            'json' => $this->body
         ]);
 
         return json_decode($response->getBody()->getContents());
